@@ -68,7 +68,7 @@ a {
   height: 390px;
   background: #DDD;
   border: 1px solid rgba(0, 0, 0, .1);
-  background: url(post.webp);
+  background: url(post.jpg);
   margin-top: 10px;
   background-origin: border-box;
   background-size: cover;
@@ -193,6 +193,6 @@ font-weight: bold;
 }
 
 [author=jason] .profile-picture {
-  background-image: url(avatar_jason.webp);
+  background-image: url(avatar_jason.png);
   background-size: cover;
 }
