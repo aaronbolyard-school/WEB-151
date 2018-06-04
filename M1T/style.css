@@ -1,0 +1,198 @@
+body {
+  font-family: "Open Sans", sans-serif;
+  background: #e9eaed;
+}
+
+a {
+  color: #3b5998;
+}
+
+.post {
+  background: white;
+  color: #141823;
+  border: 1px solid;
+  border-color: #e5e6e9 #dfe0e4 #d0d1d5;
+  border-radius: 3px;
+  font-size: 14px;
+  width: 510px;
+  margin: 10px auto 30px auto;
+  font-family: "helvetica neue", helvetica, arial, sans-serif;
+}
+
+.post-content {
+  padding: 12px 12px 10px 12px;
+}
+
+.post-author-information {
+  margin-bottom: 11px;
+  overflow: auto;
+}
+
+.post-author-avatar {
+  background: url(author-profile-pic.gif);
+  width: 40px;
+  height: 40px;
+  float: left;
+  background-origin: border-box;
+  background-size: 100%;
+  background-position: center;
+  margin-right: 8px;
+  box-sizing: border-box;
+  border: 1px solid rgba(0, 0, 0, .1);
+}
+
+.post-author {
+  padding: 0;
+  margin: 0 0 2px 0;
+}
+
+.post-author a {
+  font-size: 14px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.post-date {
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+  color: #9197a3;
+}
+
+.post-message p {
+  margin: 0 0 6px 0;
+}
+
+.post-image {
+  width: 100%;
+  height: 390px;
+  background: #DDD;
+  border: 1px solid rgba(0, 0, 0, .1);
+  background: url(post.webp);
+  margin-top: 10px;
+  background-origin: border-box;
+  background-size: cover;
+  background-position: center;
+}
+
+.image-social-links {
+  margin-top: 12px;
+  border-top: 1px solid #e5e5e5;
+  padding-top: 5px;
+}
+
+.image-social-links a {
+  color: #7f7f7f;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 14px;
+  text-decoration: none;
+  margin-right: 30px;
+  padding-left: 21px;
+  background-position: 0px 1px;
+  background-size: 15px;
+  background-repeat: no-repeat;
+}
+
+
+.image-social-links .like {
+  background-image: url(icon-like.gif);
+}
+
+.image-social-links .comment {
+  background-image: url(icon-comment.gif);
+}
+
+.image-social-links .share {
+  background-image: url(icon-share.gif);
+}
+
+.post-comments {
+  padding: 0 12px 12px 12px;
+  background: #f6f7f8;
+  border-top: 1px solid #e1e2e3;
+}
+
+.post-liked-by {
+  font-size: 12px;
+  padding: 10px 0 10px 0;
+  border-bottom: 1px solid #e1e2e3;
+  background: #f6f7f8;
+}
+
+.post-liked-by a {
+  text-decoration: none;
+}
+
+.post-comment {
+  font-size: 12px;
+}
+
+.post-comment {
+  margin-top: 10px;
+}
+
+.post-comment-text {
+  margin: 0 0 2px 0;;
+}
+
+.post-comment-info {
+  padding-top: 2px;
+  color: #9197a3;
+}
+
+.thumbs-up-icon {
+  background: url(icon-liked.png);
+  background-position: left;
+  text-align: right;
+  background-size: 15px;
+  background-repeat: no-repeat;
+  padding-left: 15px;
+  margin-right: 2px;
+  position: relative;
+  top: -1px;
+}
+
+.post-comment a {
+  text-decoration: none;
+}
+
+.post-comment a:hover {
+  text-decoration: underline;
+}
+
+.comment-author {
+font-weight: bold;
+}
+
+.post-comment .profile-picture {
+  width: 32px;
+  height: 32px;
+  float: left;
+  background-image: url(author-profile-pic.gif);
+  background-origin: border-box;
+  background-size: 100%;
+  background-position: center;
+  margin-right: 8px;
+  box-sizing: border-box;
+  border: 1px solid rgba(0, 0, 0, .1);
+}
+
+[author=blue-digital] .profile-picture {
+  background-image: url(avatar_blue_wizard_digital.jpg);
+}
+
+[author=ken-m] .profile-picture {
+  background-image: url(avatar_ken_m.jpg);
+}
+
+[author=mr-mean] .profile-picture {
+  background-image: url(avatar_mr_mean.png);
+  background-size: cover;
+}
+
+[author=jason] .profile-picture {
+  background-image: url(avatar_jason.webp);
+  background-size: cover;
+}
