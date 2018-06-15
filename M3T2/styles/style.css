@@ -1,0 +1,60 @@
+body, html {
+	padding: 0;
+	margin: 0;
+	width: 100%;
+	height: 100%;
+}
+
+body {
+	background-image: url("../images/background.png");
+	background-repeat: repeat;
+}
+
+#insult-content-wrapper {
+	position: relative;
+	top: 40%;
+	transform: translateY(-40%);
+
+	margin: 0 auto;
+
+	width: 600px;
+	height: 350px;
+	background-image: url("../images/insult_background.png");
+	background-size: cover;
+}
+
+#insult-title {
+	display: block;
+	width: 484px;
+	height: 64px;
+	margin: 0 auto;
+}
+
+#insult-content {
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 240px;
+	height: 120px;
+	margin: 0 auto;
+	font-family: "Comic Sans MS";
+	font-size: 20px;
+	margin-bottom: 100;
+	clear: both;
+}
+
+#insult-button {
+	display: block;
+	position: relative;
+	top: 40%;
+	right: -60%;
+	width: 256px;
+	height: 128px;
+
+	background-image: url("../images/wow_button.png");
+	background-position-x: 0px;
+}
+
+#insult-button:hover {
+	background-position-x: -256px;
+}
