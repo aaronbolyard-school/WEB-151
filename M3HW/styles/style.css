@@ -1,0 +1,137 @@
+body, html {
+	padding: 0;
+	margin: 0;
+	width: 100%;
+	height: 100%;
+}
+
+body {
+	background-image: url("../images/background.png");
+	background-repeat: repeat;
+}
+
+#hangman-content-wrapper {
+	padding-top: 40px;
+
+	margin: 0 auto;
+
+	width: 800px;
+	height: 400px;
+}
+
+#hangman-title {
+	display: block;
+	width: 400px;
+	height: 110px;
+	margin: 0 auto;
+}
+
+#hangman-content {
+	width: 800px;
+	height: calc(320px + 356px);
+	margin: 0 auto;
+	font-family: "Comic Sans MS";
+	font-size: 20px;
+	margin-bottom: 100;
+	clear: both;
+}
+
+#hangman-playground {
+	clear: both;
+	width: 800px;
+	height: 320px;
+}
+
+#hangman-image {
+	display: inline-block;
+	float: left;
+
+	width: 320px;
+	height: 320px;
+
+	background-image: url("../images/hangman.png");
+}
+
+#hangman-image[data-miss="0"] {
+	background-position-x: calc(-320px * 6);
+}
+
+#hangman-image[data-miss="1"] {
+	background-position-x: calc(-320px * 5);
+}
+
+#hangman-image[data-miss="2"] {
+	background-position-x: calc(-320px * 4);
+}
+
+#hangman-image[data-miss="3"] {
+	background-position-x: calc(-320px * 3);
+}
+
+#hangman-image[data-miss="4"] {
+	background-position-x: calc(-320px * 2);
+}
+
+#hangman-image[data-miss="5"] {
+	background-position-x: calc(-320px * 1);
+}
+
+#hangman-form {
+	display: block;
+	width: 512px;
+	height: 256px;
+	margin: 0 auto;
+	transform: translateX(50%);
+}
+
+#hangman-guesses {
+	display: inline-block;
+	position: relative;
+	bottom: -100px;
+	width: calc(800px - 320px);
+}
+
+.hangman-guess {
+	display: inline-block;
+	float: left;
+	width: 96px;
+	height: 96px;
+	font-size: 64px;
+	text-align: center;
+	vertical-align: center;
+	background-image: url("../images/correct_guess_box.png");
+}
+
+#hangman-letter-input {
+	display: inline-block;
+	padding: 0;
+	margin: 0;
+	border: 0;
+	float: left;
+	width: 256px;
+	height: 256px;
+	background-image: url("../images/letter_input.png");
+	font-size: 256px;
+	margin: 0 auto;
+	vertical-align: center;
+	text-align: center;
+	font-family: "Comic Sans MS";
+}
+
+#hangman-guess-button {
+	position: relative;
+	display: inline-block;
+	bottom: -75%;
+	left: -25%;
+	float: left;
+	width: 256px;
+	height: 128px;
+	margin: 0 auto;
+
+	background-image: url("../images/guess_button.png");
+	background-position-x: 0px;
+}
+
+#hangman-guess-button:hover {
+	background-position-x: -256px;
+}

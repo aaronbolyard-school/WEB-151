@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<title>Hangman!</title>
+	<link href="styles/style.css" rel="stylesheet" type="text/css">
+	<script src="scripts/main.js" defer></script>
+	<body>
+		<div id="hangman-content-wrapper">
+			<img id="hangman-title" src="images/title.png" alt="Hangman!">
+			<div id="hangman-content">
+				<div id="hangman-playground">
+					<div id="hangman-image" data-miss="0">
+					</div>
+					<div id="hangman-guesses">
+					</div>
+				</div>
+				<div id="hangman-form">
+					<input id="hangman-letter-input" maxlength="1">
+					<div id="hangman-guess-button"></div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
