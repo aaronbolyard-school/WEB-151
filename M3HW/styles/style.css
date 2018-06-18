@@ -135,3 +135,19 @@ body {
 #hangman-guess-button:hover {
 	background-position-x: -256px;
 }
+
+#hangman-quit-link {
+	display: block;
+	clear: both;
+	font-size: 20px;
+	font-style: italic;
+}
+
+a, a:visited, a:active {
+	font-style: none;
+	color: #37abc8;
+}
+
+a:hover {
+	color: #d4aa00;
+}

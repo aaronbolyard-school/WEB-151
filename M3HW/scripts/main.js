@@ -97,20 +97,25 @@ function guess(letter) {
 		}
 	}
 	else {
-		missCount += 1;
-		var hangman = document.getElementById("hangman-image");
-		var missAttribute = document.createAttribute("data-miss");
-		missAttribute.value = missCount.toString();
-		hangman.attributes.setNamedItem(missAttribute);
+		if (!(letter in guesses))
+		{
+			guesses[letter] = true;
 
-		if (missCount > MAX_MISSES) {
-			makeAnswerBoxes(word, true);
+			missCount += 1;
+			var hangman = document.getElementById("hangman-image");
+			var missAttribute = document.createAttribute("data-miss");
+			missAttribute.value = missCount.toString();
+			hangman.attributes.setNamedItem(missAttribute);
 
-			setTimeout(function() {
-				if (confirm("You lost! Play again?")) {
-					play();
-				}
-			}, 0)
+			if (missCount > MAX_MISSES) {
+				makeAnswerBoxes(word, true);
+
+				setTimeout(function() {
+					if (confirm("You lost! Play again?")) {
+						play();
+					}
+				}, 0)
+			}
 		}
 	}
 }
@@ -124,6 +129,17 @@ button.onclick = function() {
 		input.value = "";
 		guess(letter);
 	}
+}
+
+var quit = document.getElementById("hangman-quit-link");
+quit.onclick = function() {
+	isPlaying = false;
+	makeAnswerBoxes("good bye! ", true);
+	setTimeout(function() {
+		if (confirm("Thanks for playing! Try again?")) {
+			play();
+		}
+	}, 0);
 }
 
 play();
