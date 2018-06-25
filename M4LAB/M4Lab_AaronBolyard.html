@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Canvas</title>
+	</head>
+	<body>
+		<canvas id="canvas" width="800" height="400"></canvas>
+		<script>
+			// M4LAB_Template
+			// WEB 151
+			// Aaron Bolyard
+
+			var canvas = document.getElementById("canvas");
+			var context = canvas.getContext("2d");
+			
+			function drawRobot()
+			{
+				// Center the drawing.
+				context.translate(100, 0);
+				
+				// Head.
+				context.fillRect(-25, 0, 50, 50);
+				context.translate(0, 50);
+
+				// Neck.
+				context.fillRect(-5, 0, 10, 20);
+				context.translate(0, 20);
+
+				// Arms.
+				context.fillRect(-75, 0, 150, 10);
+				context.translate(0, 10);
+
+				// Body.
+				context.fillRect(-35, 0, 70, 70);
+				context.translate(0, 70);
+
+				// Left leg.
+				context.fillRect(-35, 0, 10, 50);
+
+				// Right leg.
+				context.fillRect(25, 0, 10, 50);
+			}
+
+			function drawStyledFilledRectangle(color, x, y, width, height)
+			{
+				var oldStyle = context.fillStyle;
+				context.fillStyle = color;
+				context.fillRect(x, y, width, height);
+				context.fillStyle = oldStyle;
+			}
+
+			function drawFlag()
+			{
+				drawStyledFilledRectangle("deeppink", 0, 0, 50, 100);
+				drawStyledFilledRectangle("gold", 50, 0, 50, 100);
+				drawStyledFilledRectangle("cornflowerblue", 100, 0, 50, 100);
+			}
+
+			function drawPerson()
+			{
+				var oldLineWidth = context.lineWidth;
+				context.lineWidth = 4;
+
+				context.translate(20, 0);
+				context.strokeRect(5, 0, 20, 20);
+
+				context.translate(15, 20);
+				context.beginPath();
+
+				// Body
+				context.moveTo(0, 0);
+				context.lineTo(0, 40);
+
+				// Left arm
+				context.moveTo(0, 20);
+				context.lineTo(-15, 5);
+
+				// Right arm
+				context.moveTo(0, 20);
+				context.lineTo(15, 5);
+
+				// Left leg
+				context.moveTo(0, 40);
+				context.lineTo(-15, 60);
+
+				// Right leg
+				context.moveTo(0, 40);
+				context.lineTo(15, 60);
+
+				context.stroke(); 
+
+				context.lineWidth = oldLineWidth;
+
+			}
+
+			function drawStyledCircle(x, y, radius, fill, stroke, strokeWidth)
+			{
+				if (fill)
+				{
+					var oldFillStyle = context.fillStyle;
+					context.fillStyle = fill;
+
+					context.beginPath();
+					context.arc(x, y, radius, 0, Math.PI * 2, false);
+					context.fill();
+
+					context.fillStyle = oldFillStyle;
+				}
+
+				if (stroke)
+				{
+					strokeWidth = strokeWidth ? strokeWidth : 4;
+
+					var oldStrokeStyle = context.strokeStyle;
+					var oldLineWidth = context.lineWidth;
+					context.strokeStyle = stroke;
+					context.lineWidth = strokeWidth;
+
+					context.beginPath();
+					context.arc(x, y, radius, 0, Math.PI * 2, false);
+					context.stroke();
+
+					context.strokeStyle = oldStrokeStyle;
+					context.lineWidth = oldLineWidth;
+				}
+			}
+
+			function drawSnowman(x, y)
+			{
+				context.translate(x + 75, y);
+
+				// Draw head.
+				drawStyledCircle(0, 30, 50, null, 'black', 8);
+
+				// Draw eyes.
+				drawStyledCircle(-25, 25, 10, 'black', null, null);
+				drawStyledCircle(25, 25, 10, 'black', null, null);
+
+				// Draw nose :-)
+				drawStyledCircle(0, 50, 10, 'orange', null, null);
+
+				context.translate(0, 100);
+
+				// Draw body.
+				drawStyledCircle(0, 55, 75, null, 'black', 8);
+
+				// Draw buttons.
+				for (var i = 0; i < 3; ++i)
+				{
+					drawStyledCircle(0, i * 40 + 15, 10, 'black', null, null);
+				}
+			}
+
+			function drawPoints(points)
+			{
+				context.beginPath();
+
+				for (var i = 0; i < points.length; ++i)
+				{
+					var currentPoint = points[i];
+
+					if (i == 0)
+					{
+						context.moveTo(currentPoint[0], currentPoint[1]);
+					}
+					else
+					{
+						context.lineTo(currentPoint[0], currentPoint[1]);
+					}
+				}
+
+				context.stroke()
+			}
+
+			context.resetTransform();
+			context.translate(40, 40);
+			drawFlag();
+
+			context.resetTransform();
+			context.translate(200, 40);
+			drawRobot();
+
+			context.resetTransform();
+			context.translate(400, 40);
+			drawPerson();
+
+			context.resetTransform();
+			drawSnowman(600, 40);
+
+			context.resetTransform();
+			context.translate(40, 240);
+			var mysteryPoints = [
+				[50, 50],
+				[50, 100],
+				[25, 120],
+				[100, 50],
+				[70, 90],
+				[100, 90],
+				[70, 120]
+			];
+			drawPoints(mysteryPoints);
+		</script>
+	</body>
+</html>
