@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Canvas</title>
+	</head>
+	<body>
+		<canvas id="canvas" width="200" height="200"></canvas>
+		<script>
+			// M5T1
+			// Bee animation from book. The wings also animate.
+			// WEB 151
+			// Aaron Bolyard
+
+			var canvas = document.getElementById("canvas");
+			var context = canvas.getContext("2d");
+
+			function drawStyledCircle(x, y, radius, fill, stroke, strokeWidth)
+			{
+				if (fill)
+				{
+					var oldFillStyle = context.fillStyle;
+					context.fillStyle = fill;
+
+					context.beginPath();
+					context.arc(x, y, radius, 0, Math.PI * 2, false);
+					context.fill();
+
+					context.fillStyle = oldFillStyle;
+				}
+
+				if (stroke)
+				{
+					strokeWidth = strokeWidth ? strokeWidth : 4;
+
+					var oldStrokeStyle = context.strokeStyle;
+					var oldLineWidth = context.lineWidth;
+					context.strokeStyle = stroke;
+					context.lineWidth = strokeWidth;
+
+					context.beginPath();
+					context.arc(x, y, radius, 0, Math.PI * 2, false);
+					context.stroke();
+
+					context.strokeStyle = oldStrokeStyle;
+					context.lineWidth = oldLineWidth;
+				}
+			}
+
+			function drawBee(x, y, time)
+			{
+				context.translate(x, y);
+
+				// Animate the wings.
+				var wingOffset = Math.abs(Math.sin(time * 200) * 2);
+
+				drawStyledCircle(0, 0, 8, "gold", "black", 2);
+				drawStyledCircle(-5 - wingOffset, -11, 5, null, "black", 2);
+				drawStyledCircle(5 + wingOffset, -11, 5, null, "black", 2);
+				drawStyledCircle(-2, -1, 2, null, "black", 2);
+				drawStyledCircle(2, -1, 2, null, "black", 2);
+
+				context.translate(-x, -y);
+			}
+
+			function update(coordinate)
+			{
+				var offset = Math.random() * 4 - 2;
+				coordinate += offset;
+
+				if (coordinate > 200)
+				{
+					coordinate = 200;
+				}
+
+				if (coordinate < 0)
+				{
+					coordinate = 0;
+				}
+
+				return coordinate;
+			}
+
+			var beeX = 100, beeY = 100;
+			var beeTime = 0;
+			function tick()
+			{
+				context.clearRect(0, 0, 200, 200);
+
+				drawBee(beeX, beeY, beeTime);
+				beeX = update(beeX);
+				beeY = update(beeY);
+				beeTime += 1 / 1000 * 30;
+
+				context.strokeRect(0, 0, 200, 200);
+			}
+
+			setInterval(tick, 30);
+		</script>
+	</body>
+</html>
