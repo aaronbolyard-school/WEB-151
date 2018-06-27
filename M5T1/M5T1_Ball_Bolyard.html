@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Canvas</title>
+	</head>
+	<body>
+		<canvas id="canvas" width="200" height="200"></canvas>
+		<script>
+			// M5T1
+			// Bee animation from book. The wings also animate.
+			// WEB 151
+			// Aaron Bolyard
+
+			var canvas = document.getElementById("canvas");
+			var context = canvas.getContext("2d");
+
+			function drawStyledCircle(x, y, radius, fill, stroke, strokeWidth)
+			{
+				if (fill)
+				{
+					var oldFillStyle = context.fillStyle;
+					context.fillStyle = fill;
+
+					context.beginPath();
+					context.arc(x, y, radius, 0, Math.PI * 2, false);
+					context.fill();
+
+					context.fillStyle = oldFillStyle;
+				}
+
+				if (stroke)
+				{
+					strokeWidth = strokeWidth ? strokeWidth : 4;
+
+					var oldStrokeStyle = context.strokeStyle;
+					var oldLineWidth = context.lineWidth;
+					context.strokeStyle = stroke;
+					context.lineWidth = strokeWidth;
+
+					context.beginPath();
+					context.arc(x, y, radius, 0, Math.PI * 2, false);
+					context.stroke();
+
+					context.strokeStyle = oldStrokeStyle;
+					context.lineWidth = oldLineWidth;
+				}
+			}
+
+			var Ball = function()
+			{
+				this.x = 100;
+				this.y = 100;
+				this.xSpeed = -2;
+				this.ySpeed = 3;
+			}
+
+			Ball.prototype.draw = function()
+			{
+				drawStyledCircle(this.x, this.y, 3, 'black', null, null);
+			}
+
+			Ball.prototype.move = function()
+			{
+				this.x += this.xSpeed;
+				this.y += this.ySpeed;
+			}
+
+			Ball.prototype.checkCollision = function()
+			{
+				if (this.x < 0 || this.x > 200)
+				{
+					this.xSpeed = -this.xSpeed;
+				}
+
+				if (this.y < 0 || this.y > 200)
+				{
+					this.ySpeed = -this.ySpeed;
+				}
+			}
+
+			var ball = new Ball();
+			function tick()
+			{
+				context.clearRect(0, 0, 200, 200);
+
+				ball.draw();
+				ball.move();
+				ball.checkCollision();
+
+				context.strokeRect(0, 0, 200, 200);
+			}
+
+			setInterval(tick, 30);
+		</script>
+	</body>
+</html>
