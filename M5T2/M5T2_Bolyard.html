@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>M5T2 jQuery</title>
+		<script src="https://code.jquery.com/jquery-2.1.0.js"></script>
+	</head>
+	<body>
+		<h1 id="m5t2-header">To Boldy Go...</h1>
+		<p id="m5t2-paragraph">...is incorrect grammar; it's a split infinitive!</p>
+		<script>
+			$("html").click(function(event)
+			{
+				$("#m5t2-paragraph").offset({
+					left: event.pageX,
+					top: event.pageY
+				})
+			});
+
+			$("html").mousemove(function(event)
+			{
+				$("#m5t2-header").offset({
+					left: event.pageX,
+					top: event.pageY
+				})
+			});
+		</script>
+	</body>
+</html>
