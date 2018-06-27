@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Buried Treasure!git sgi</title>
+		<script src="https://code.jquery.com/jquery-2.1.0.js"></script>
+	</head>
+	<body>
+		<h1 id="heading">Find the buried treasure!</h1>
+
+		<img id="map" width=410 height=600 src="images/map.png">
+
+		<p id="distance"> </p>
+		<p id="clicks"> </p>
+
+		<script>
+			// M5HW
+			// Buried treasure, gold challenge.
+			// WEB 151
+			// Aaron Bolyard
+
+			var WIDTH = 410, HEIGHT = 600;
+			var MAX_CLICKS = 20;
+
+			function getRandomCoordinate(max)
+			{
+				return Math.floor(Math.random() * max);
+			}
+
+			var clicks, isPlaying, target;
+
+			function play()
+			{
+				clicks = 0;
+				isPlaying = true;
+				target =
+				{
+					x: getRandomCoordinate(WIDTH),
+					y: getRandomCoordinate(HEIGHT)
+				};
+
+				updateRemainingClicks();
+				$("#distance").text("");
+			}
+
+			function updateRemainingClicks()
+			{
+				var remainingClicks = MAX_CLICKS - clicks;
+				$("#clicks").text(remainingClicks + " click(s) remaining...");
+			}
+
+			// Computes the distance between the mouse click 'event' and
+			// the 'target'.
+			function getDistance(event, target)
+			{
+				var differenceX = event.offsetX - target.x;
+				var differenceY = event.offsetY - target.y;
+				return Math.sqrt(differenceX * differenceX + differenceY * differenceY);
+			}
+
+			// This is less ugly than cascading if statements.
+			var DISTANCE =
+			[
+				{ d: 10, m: "Boiling hot!" },
+				{ d: 20, m: "Really hot" },
+				{ d: 40, m: "Hot" },
+				{ d: 80, m: "Warm" },
+				{ d: 160, m: "Cold" },
+				{ d: 320, m: "Really cold" },
+				{ d: Infinity, m: "Freezing!" },
+			];
+
+			// Returns a hint for 'distance'.
+			//
+			// The lower 'distance' is, the warmer the hint message will be.
+			function getDistanceHint(distance)
+			{
+				for (var i = 0; i < DISTANCE.length; ++i)
+				{
+					if (distance < DISTANCE[i].d)
+					{
+						$("#distance").text(DISTANCE[i].m);
+						break;
+					}
+				}
+			}
+
+			$("#map").click(function(event)
+			{
+				if (!isPlaying)
+				{
+					return;
+				}
+
+				clicks += 1;
+
+				var distance = getDistance(event, target);
+				var hint = getDistanceHint(distance);
+				$("#distance").text(hint);
+
+				if (distance < 8)
+				{
+					alert("Found the treasure in " + clicks + " click(s)!");
+					if (confirm("Play again?"))
+					{
+						play();
+					}
+				}
+
+				if (clicks >= MAX_CLICKS)
+				{
+					if (confirm("GAME OVER! Play again?"))
+					{
+						play();
+					}
+				}
+				else
+				{
+					updateRemainingClicks();
+				}
+			});
+
+			play();
+		</script>
+	</body>
+</html>
