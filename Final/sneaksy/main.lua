@@ -73,4 +73,5 @@ end
 
 function love.draw()
 	_D:draw()
+	_W:draw()
 end

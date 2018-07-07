@@ -17,9 +17,9 @@ local WeakMeleePeep = Class(MeleePeep)
 function WeakMeleePeep:new(name)
 	MeleePeep.new(self, "Iron Knight")
 
-	self:setDamageRange(1, 4)
+	self:setDamageRange(1, 3)
 	self:setAttackCooldown(1.8)
-	self:setMaxHealth(6)
+	self:setMaxHealth(24)
 end
 
 return WeakMeleePeep

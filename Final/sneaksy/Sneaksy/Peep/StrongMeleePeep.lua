@@ -17,9 +17,15 @@ local StrongMeleePeep = Class(MeleePeep)
 function StrongMeleePeep:new(name)
 	MeleePeep.new(self, "Itsy Knight")
 
-	self:setDamageRange(4, 8)
+	self:setDamageRange(2, 7)
 	self:setAttackCooldown(2.4)
-	self:setMaxHealth(12)
+	self:setMaxHealth(96)
+end
+
+function StrongMeleePeep:damage(value)
+	print("Strong Knight damaged", value)
+
+	MeleePeep.damage(self, value)
 end
 
 return StrongMeleePeep

@@ -13,18 +13,19 @@ local CircleShape = require "Sneaksy.Common.Math.CircleShape"
 local Peep = require "Sneaksy.Peep.Peep"
 
 local StormOfArmadyllo = Class(Peep)
+StormOfArmadyllo.DAMAGE_MULTIPLIER = 8
 
 function StormOfArmadyllo:new()
 	Peep.new(self, "Storm of Armadyllo")
 
-	self.damage = 2
+	self.damage = 1
 	self.speed = 200
 
 	self:setShape(CircleShape(32))
 end
 
 function StormOfArmadyllo:getDamage()
-	return self.damage
+	return self.damage * StormOfArmadyllo.DAMAGE_MULTIPLIER
 end
 
 function StormOfArmadyllo:onNotifyBeginTouch(e)

@@ -57,7 +57,6 @@ end
 
 function MeleePeep:resurrect()
 	Enemy.resurrect(self)
-	self.attackCooldown = 0
 end
 
 function MeleePeep:update(delta)
@@ -67,11 +66,18 @@ function MeleePeep:update(delta)
 
 	local target = self:findTarget()
 	if target and not self:getIsDead() then
+		local range
+		if target:isType(require "Sneaksy.Peep.Sneaksy") then
+			range = 1.25
+		else
+			range = 1.5
+		end
+
 		local targetSize = target:getShape():getBounds() / 2
 		local targetPosition = target:getPosition() + Vector(targetSize.x * target:getDirection() * 2, 0, 0)
 		local difference = targetPosition - self:getPosition()
 
-		if math.abs(difference.x) < targetSize.x + self:getShape():getRadius() * 1.25 and
+		if math.abs(difference.x) < targetSize.x + self:getShape():getRadius() * range and
 		   math.abs(difference.y) < targetSize.y
 		then
 			if self.currentCooldown <= 0 then
@@ -84,9 +90,9 @@ function MeleePeep:update(delta)
 
 				self.currentCooldown = self.attackCooldown
 
-				if difference.x < -1 then
+				if difference.x < -10 then
 					self:setDirection(Peep.DIRECTION_LEFT)
-				elseif difference.x > 1 then
+				elseif difference.x > 10 then
 					self:setDirection(Peep.DIRECTION_RIGHT)
 				end
 			end
@@ -96,7 +102,7 @@ function MeleePeep:update(delta)
 			self:setVelocity(self.speed * difference:getNormal())
 		end
 	else
-		self:setVelocity(Vector(0))
+		self:setVelocity(Vector())
 	end
 end
 

@@ -12,6 +12,7 @@ local Vector = require "Sneaksy.Common.Math.Vector"
 local Peep = require "Sneaksy.Peep.Peep"
 
 Waves = Class()
+Waves.SPAWN_TIME = 5
 
 function Waves:new(director)
 	self.director = director
@@ -23,6 +24,9 @@ function Waves:new(director)
 	self.currentWave = 0
 
 	self.spawnNextWave = true
+	self.spawnTime = 0
+
+	self.font = love.graphics.newFont(32)
 end
 
 function Waves:onKilled(e)
@@ -70,8 +74,43 @@ end
 
 function Waves:update(delta)
 	if self.spawnNextWave then
-		self.spawnNextWave = false
-		self:nextWave()
+		if self.spawnTime > Waves.SPAWN_TIME then
+			self.spawnNextWave = false
+			self:nextWave()
+
+			self.spawnTime = 0
+		else
+			self.spawnTime = self.spawnTime + delta
+		end
+	end
+end
+
+function Waves:draw()
+	if self.spawnNextWave then
+		local oldFont = love.graphics.getFont()
+		local w, h = love.window.getMode()
+		local x = 0
+		local y = h / 2 - self.font:getHeight() / 2
+
+		love.graphics.setFont(self.font)
+
+		local text = string.format(
+			"NEXT WAVE IN %d SEC...",
+			Waves.SPAWN_TIME - math.floor(self.spawnTime))
+
+		love.graphics.setColor(0, 0, 0, 255)
+		love.graphics.printf(
+			text,
+			x + 1, y + 1,
+			w,
+			'center')
+
+		love.graphics.setColor(255, 255, 255, 255)
+		love.graphics.printf(
+			text,
+			x, y,
+			w,
+			'center')
 	end
 end
 
