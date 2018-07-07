@@ -48,7 +48,9 @@ end
 function Enemy:onNotifyBeginCollision(e)
 	local StormOfArmadyllo = require "Sneaksy.Peep.StormOfArmadyllo"
 
-	if e.other:isType(StormOfArmadyllo) then
+	if e.other:isType(StormOfArmadyllo) and
+	   self:getTeam() == Peep.TEAM_DRAKKENSON
+	then
 		self:damage(e.other:getDamage())
 		self:broadcast('Damaged')
 	end

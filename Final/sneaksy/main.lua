@@ -23,6 +23,11 @@ function love.load()
 			local w, h = love.window.getMode()
 			p:teleport(Vector(math.random(128, w - 128), math.random(128, h - 128)))
 		end
+		for i = 1, 1 do
+			local p = _D:spawn(require "Sneaksy.Peep.StrongMeleePeep")
+			local w, h = love.window.getMode()
+			p:teleport(Vector(math.random(128, w - 128), math.random(128, h - 128)))
+		end
 	end
 
 	_D:addRenderer(
@@ -38,6 +43,13 @@ function love.load()
 		EnemyRenderer({
 			idle = "Resources/WeakKnight/WeakKnight.png",
 			attack = "Resources/WeakKnight/WeakKnight_Attack.png"
+		}))
+
+	_D:addRenderer(
+		require "Sneaksy.Peep.StrongMeleePeep",
+		EnemyRenderer({
+			idle = "Resources/StrongKnight/StrongKnight.png",
+			attack = "Resources/StrongKnight/StrongKnight_Attack.png"
 		}))
 end
 

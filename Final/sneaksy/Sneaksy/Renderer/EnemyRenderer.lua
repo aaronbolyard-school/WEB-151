@@ -65,8 +65,8 @@ function EnemyRenderer:draw(peep)
 
 	local speed = peep:getVelocity():getLength()
 	local angle
-	local positionX, positionY = position.x, position.y - image:getHeight() / 2
-	local anchorX, anchorY = image:getWidth() / 2, image:getHeight() / 2
+	local positionX, positionY = position.x, position.y + peep:getShape():getRadius()
+	local anchorX, anchorY = image:getWidth() / 2, image:getHeight()
 	if speed > 1 and not peep:getIsDead() then
 		local mu = self.times[peep] * math.pi * 2
 		local delta = (math.sin(mu) + 1) / 2
@@ -88,7 +88,6 @@ function EnemyRenderer:draw(peep)
 		angle,
 		1 * peep:getDirection(), 1,
 		anchorX, anchorY)
-	love.graphics.circle('line', position.x, position.y, peep:getShape():getRadius())
 
 	love.graphics.setColor(255, 255, 255, 255)
 end

@@ -71,7 +71,7 @@ function MeleePeep:update(delta)
 		local targetPosition = target:getPosition() + Vector(targetSize.x * target:getDirection() * 2, 0, 0)
 		local difference = targetPosition - self:getPosition()
 
-		if math.abs(difference.x) < targetSize.x + self:getShape():getRadius() * 1.5 and
+		if math.abs(difference.x) < targetSize.x + self:getShape():getRadius() * 1.25 and
 		   math.abs(difference.y) < targetSize.y
 		then
 			if self.currentCooldown <= 0 then
