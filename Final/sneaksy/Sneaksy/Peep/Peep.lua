@@ -52,6 +52,12 @@ function Peep:init(director)
 	self:makeBody()
 end
 
+function Peep:poof()
+	if self.body then
+		self.body:destroy()
+	end
+end
+
 function Peep:makeBody(mode)
 	if self.body then
 		self.body:destroy()

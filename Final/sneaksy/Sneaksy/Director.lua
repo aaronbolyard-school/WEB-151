@@ -7,6 +7,7 @@
 -- License, v. 2.0. If a copy of the MPL was not distributed with this
 -- file, You can obtain one at http://mozilla.org/MPL/2.0/.
 --------------------------------------------------------------------------------
+local Callback = require "Sneaksy.Common.Callback"
 local Class = require "Sneaksy.Common.Class"
 local Vector = require "Sneaksy.Common.Math.Vector"
 local Peep = require "Sneaksy.Peep.Peep"
@@ -92,6 +93,10 @@ function Director:new()
 
 	self.renderers = {}
 	self.defaultRenderer = Renderer()
+
+	self.callbacks = {}
+
+	self.pendingPeeps = {}
 end
 
 function Director:addRenderer(Type, renderer)
@@ -135,17 +140,41 @@ end
 -- otherwise.
 function Director:poof(peep)
 	if self.peeps[peep] then
-		self.peeps[peep] = nil
+		table.insert(self.pendingPeeps, peep)
 		return true
 	end
 
 	return false
 end
 
+-- Listens for global broadcasts.
+function Director:listen(event, func, ...)
+	local c = self.callbacks[event]
+	if not c then
+		c = Callback()
+		self.callbacks[event] = c
+	end
+
+	c:register(func, ...)
+end
+
+-- Silences a global broadcast.
+function Director:silence(event, func)
+	local c = self.callbacks[event]
+	if c then
+		c:unregister(event, func)
+	end
+end
+
 -- Broadcasts an event to all Peeps.
 function Director:broadcast(event, e, ...)
 	for peep in pairs(self.peeps) do
 		peep:poke(event, e, ...)
+	end
+
+	local c = self.callbacks[event]
+	if c then
+		c(e, ...)
 	end
 end
 
@@ -179,6 +208,13 @@ function Director:near(position, distance)
 end
 
 function Director:update(delta)
+	for _, peep in pairs(self.pendingPeeps) do
+		peep:poof()
+
+		self.peeps[peep] = nil
+	end
+	self.pendingPeeps = {}
+
 	self.world:update(delta)
 
 	for peep in self:iterate() do
@@ -193,15 +229,10 @@ end
 function Director:iterate(filter)
 	filter = filter or function() return true end
 
-	local p = {}
-	for peep in pairs(self.peeps) do
-		p[peep] = true
-	end
-
 	local n, c = next, nil
 	return function()
 		repeat
-			c = n(p, c)
+			c = n(self.peeps, c)
 		until not c or filter(c)
 
 		return c

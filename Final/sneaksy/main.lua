@@ -1,11 +1,12 @@
 local Director = require "Sneaksy.Director"
+local Waves = require "Sneaksy.Waves"
 local Vector = require "Sneaksy.Common.Math.Vector"
 local EnemyRenderer = require "Sneaksy.Renderer.EnemyRenderer"
 local Renderer = require "Sneaksy.Renderer.Renderer"
 local SneaksyRenderer = require "Sneaksy.Renderer.SneaksyRenderer"
 local StormOfArmadylloRenderer = require "Sneaksy.Renderer.StormOfArmadylloRenderer"
 
-local _D
+local _D, _W
 function love.load()
 	math.randomseed(os.time())
 
@@ -17,18 +18,18 @@ function love.load()
 		p:teleport(Vector(400, 300))
 	end
 	_D:spawn(require "Sneaksy.Peep.Sneaksy")
-	do
-		for i = 1, 2 do
-			local p = _D:spawn(require "Sneaksy.Peep.WeakMeleePeep")
-			local w, h = love.window.getMode()
-			p:teleport(Vector(math.random(128, w - 128), math.random(128, h - 128)))
-		end
-		for i = 1, 1 do
-			local p = _D:spawn(require "Sneaksy.Peep.StrongMeleePeep")
-			local w, h = love.window.getMode()
-			p:teleport(Vector(math.random(128, w - 128), math.random(128, h - 128)))
-		end
-	end
+
+	_W = Waves(_D)
+	_W:push({
+		{ peep = "WeakMeleePeep", count = 1 }
+	})
+	_W:push({
+		{ peep = "WeakMeleePeep", count = 2 }
+	})
+	_W:push({
+		{ peep = "WeakMeleePeep", count = 2 },
+		{ peep = "StrongMeleePeep", count = 1 },
+	})
 
 	_D:addRenderer(
 		require "Sneaksy.Peep.StormOfArmadyllo",
@@ -55,6 +56,7 @@ end
 
 function love.update(delta)
 	_D:update(delta)
+	_W:update(delta)
 end
 
 function love.mousepressed(...)

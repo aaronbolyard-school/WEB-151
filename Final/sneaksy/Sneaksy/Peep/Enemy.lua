@@ -68,7 +68,8 @@ function Enemy:damage(value)
 
 		if self.currentHealth == 0 then
 			self:killed()
-			self:broadcast('Killed', {})
+			self:getDirector():broadcast('Killed', { peep = self })
+			self:broadcast('Killed')
 		end
 	end
 end
