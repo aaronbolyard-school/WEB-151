@@ -17,13 +17,30 @@ local StormOfArmadyllo = Class(Peep)
 function StormOfArmadyllo:new()
 	Peep.new(self, "Storm of Armadyllo")
 
-	self.damage = 1
+	self.damage = 2
+	self.speed = 200
 
 	self:setShape(CircleShape(32))
 end
 
 function StormOfArmadyllo:getDamage()
 	return self.damage
+end
+
+function StormOfArmadyllo:onNotifyBeginTouch(e)
+	local Sneaksy = require "Sneaksy.Peep.Sneaksy"
+	if e.other:isType(Sneaksy) then
+		local size = e.other:getShape():getSize()
+		local direction = e.other:getDirection()
+		local position = self:getPosition()
+		local difference = position - e.other:getPosition()
+
+		if (direction == Peep.DIRECTION_LEFT and math.abs(difference.x) <= size.x + 8) or
+		   (direction == Peep.DIRECTION_RIGHT and position.x <= size.x + 8)
+		then
+			e.contact:setEnabled(false)
+		end
+	end
 end
 
 function StormOfArmadyllo:onNotifyBeginCollision(e)
@@ -52,11 +69,15 @@ function StormOfArmadyllo:onSneaksySwipe(e)
 			end
 
 			if e.normal.y < 0 then
-				self:setAcceleration(acceleration:reflect(Vector(0, -1)))
-				self:setVelocity(velocity:reflect(Vector(0, -1)))
+				acceleration.y = -math.abs(acceleration.y)
+				velocity.y = -math.abs(velocity.y)
+				self:setAcceleration(acceleration)
+				self:setVelocity(velocity)
 			else
-				self:setAcceleration(acceleration:reflect(Vector(0, -1)))
-				self:setVelocity(velocity:reflect(Vector(0, -1)))
+				acceleration.y = math.abs(acceleration.y)
+				velocity.y = math.abs(velocity.y)
+				self:setAcceleration(acceleration)
+				self:setVelocity(velocity)
 			end
 		end
 	end
@@ -105,6 +126,11 @@ function StormOfArmadyllo:update(delta)
 		self:broadcast('NotifyBeginCollision', {
 			normal = Vector(0, 1)
 		})
+	end
+
+	do
+		local v = self:getVelocity():getNormal() * self.speed
+		self:setVelocity(v)
 	end
 end
 

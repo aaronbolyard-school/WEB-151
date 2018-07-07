@@ -9,6 +9,7 @@
 --------------------------------------------------------------------------------
 local Class = require "Sneaksy.Common.Class"
 local Vector = require "Sneaksy.Common.Math.Vector"
+local Shape = require "Sneaksy.Common.Math.Shape"
 local Peep = require "Sneaksy.Peep.Peep"
 
 local Enemy = Class(Peep)
@@ -16,9 +17,12 @@ local Enemy = Class(Peep)
 function Enemy:new(name)
 	Peep.new(self, name)
 
+	self:setTeam(Peep.TEAM_DRAKKENSON)
+
 	self.maxHealth = 1
 	self.currentHealth = 1
 	self.isResurrected = false
+	self.targetTeam = Peep.TEAM_SNEAKSY
 end
 
 function Enemy:setMaxHealth(value)
@@ -50,6 +54,10 @@ function Enemy:onNotifyBeginCollision(e)
 	end
 end
 
+function Enemy:onDamaged(e)
+	self:damage(e.damage)
+end
+
 function Enemy:damage(value)
 	value = math.floor(value or 0)
 
@@ -70,12 +78,48 @@ function Enemy:onResurrect(e)
 end
 
 function Enemy:resurrect()
-	self:getDirector():poof(self)
+	self.targetTeam = Peep.TEAM_DRAKKENSON
+	self:setTeam(Peep.TEAM_SNEAKSY)
+
+	self.currentHealth = self.maxHealth
+
+	self:broadcast('Resurrected', {})
 end
 
 function Enemy:killed()
+	if self:getTeam() == Peep.TEAM_SNEAKSY then
+		self:getDirector():poof(self)
+	end
+
 	self:setAcceleration(Vector(0))
 	self:setVelocity(Vector(0))
+end
+
+function Enemy:findTarget()
+	local target
+	if self.targetTeam == Peep.TEAM_SNEAKSY then
+		local Sneaksy = require "Sneaksy.Peep.Sneaksy"
+		for peep in self:getDirector():byType(Sneaksy) do
+			target = peep
+			break
+		end
+	end
+
+	local distance
+	if target then
+		distance = Vector.getLength(target:getPosition() - self:getPosition())
+	else
+		distance = math.huge
+	end
+
+	for peep in self:getDirector():byTeam(self.targetTeam) do
+		local d = Vector.getLength(peep:getPosition() - self:getPosition())
+		if d < distance and peep:isCompatibleType(Enemy) and not peep:getIsDead() then
+			target = peep
+		end
+	end
+
+	return target
 end
 
 -- Poof!

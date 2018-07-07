@@ -52,6 +52,12 @@ function Sneaksy:onMousePressed(x, y, button)
 		self.isDragging = true
 		self.startDragX = x
 		self.startDragY = y
+
+		self:getDirector():broadcastNear(
+			Vector(x, y),
+			128,
+			'Resurrect',
+			{})
 	end
 end
 

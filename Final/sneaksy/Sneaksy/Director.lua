@@ -65,7 +65,30 @@ function Director:new()
 		})
 	end
 
-	self.world:setCallbacks(beginTouch, endTouch)
+	local function beforeTouch(fa, fb, contact)
+		local ba, bb = fa:getBody(), fb:getBody()
+		local a, b = ba:getUserData(), bb:getUserData()
+
+		a:poke('NotifyBeginTouch', {
+			other = b,
+			normal = Vector(contact:getNormal()),
+			contact = contact
+		})
+
+		b:poke('NotifyBeginTouch', {
+			other = a,
+			normal = Vector(contact:getNormal()),
+			contact = contact
+		})
+
+		self:broadcast('BeginTouch', {
+			a = a,
+			b = b,
+			point = p
+		})
+	end
+
+	self.world:setCallbacks(beginTouch, endTouch, beforeTouch)
 
 	self.renderers = {}
 	self.defaultRenderer = Renderer()
@@ -142,6 +165,12 @@ function Director:byType(Type)
 	end)
 end
 
+function Director:byTeam(team)
+	return self:iterate(function(c)
+		return c:getTeam() == team
+		end)
+end
+
 function Director:near(position, distance)
 	return self:iterate(function(c)
 		local difference = position - c:getPosition()
@@ -164,10 +193,15 @@ end
 function Director:iterate(filter)
 	filter = filter or function() return true end
 
+	local p = {}
+	for peep in pairs(self.peeps) do
+		p[peep] = true
+	end
+
 	local n, c = next, nil
 	return function()
 		repeat
-			c = n(self.peeps, c)
+			c = n(p, c)
 		until not c or filter(c)
 
 		return c

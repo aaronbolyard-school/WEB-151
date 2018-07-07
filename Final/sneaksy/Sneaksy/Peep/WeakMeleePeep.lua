@@ -19,7 +19,7 @@ function WeakMeleePeep:new(name)
 
 	self:setDamageRange(1, 4)
 	self:setAttackCooldown(1.6)
-	self:setMaxHealth(4)
+	self:setMaxHealth(6)
 end
 
 return WeakMeleePeep

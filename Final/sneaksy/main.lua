@@ -7,6 +7,8 @@ local StormOfArmadylloRenderer = require "Sneaksy.Renderer.StormOfArmadylloRende
 
 local _D
 function love.load()
+	math.randomseed(os.time())
+
 	_D = Director()
 	do
 		local p = _D:spawn(require "Sneaksy.Peep.StormOfArmadyllo")
@@ -16,9 +18,11 @@ function love.load()
 	end
 	_D:spawn(require "Sneaksy.Peep.Sneaksy")
 	do
-		local p = _D:spawn(require "Sneaksy.Peep.WeakMeleePeep")
-		local w, h = love.window.getMode()
-		p:teleport(Vector(w / 2, h / 2))
+		for i = 1, 2 do
+			local p = _D:spawn(require "Sneaksy.Peep.WeakMeleePeep")
+			local w, h = love.window.getMode()
+			p:teleport(Vector(math.random(128, w - 128), math.random(128, h - 128)))
+		end
 	end
 
 	_D:addRenderer(

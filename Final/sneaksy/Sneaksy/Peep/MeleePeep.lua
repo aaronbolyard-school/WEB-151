@@ -55,32 +55,40 @@ function MeleePeep:setAttackCooldown(value)
 	self.attackCooldown = self.attackCooldown or value
 end
 
+function MeleePeep:resurrect()
+	Enemy.resurrect(self)
+	self.attackCooldown = 0
+end
+
 function MeleePeep:update(delta)
 	Enemy.update(self, delta)
 
-	local Sneaksy = require "Sneaksy.Peep.Sneaksy"
-	local sneaksy
-	for peep in self:getDirector():byType(Sneaksy) do
-		sneaksy = peep
-		break
-	end
-
 	self.currentCooldown = math.max(self.currentCooldown - delta, 0)
 
-	if sneaksy and not self:getIsDead() then
-		local sneaksySize = sneaksy:getShape():getBounds()
-		local sneaksyTarget = sneaksy:getPosition() + Vector(sneaksySize.x * sneaksy:getDirection())
-		local difference = sneaksyTarget - self:getPosition()
+	local target = self:findTarget()
+	if target and not self:getIsDead() then
+		local targetSize = target:getShape():getBounds() / 2
+		local targetPosition = target:getPosition() + Vector(targetSize.x * target:getDirection() * 2, 0, 0)
+		local difference = targetPosition - self:getPosition()
 
-		if difference:getLength() < sneaksySize.x + self:getShape():getRadius() * 1.5 then
+		if math.abs(difference.x) < targetSize.x + self:getShape():getRadius() * 1.5 and
+		   math.abs(difference.y) < targetSize.y
+		then
 			if self.currentCooldown <= 0 then
-				self:getDirector():broadcast('MeleeAttack', {
+				target:poke('Damaged', {
 					instigator = self,
 					damage = self:getDamage()
 				})
+
 				self:broadcast('Attack', {})
 
 				self.currentCooldown = self.attackCooldown
+
+				if difference.x < -1 then
+					self:setDirection(Peep.DIRECTION_LEFT)
+				elseif difference.x > 1 then
+					self:setDirection(Peep.DIRECTION_RIGHT)
+				end
 			end
 
 			self:setVelocity(Vector(0))
