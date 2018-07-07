@@ -95,6 +95,8 @@ function MeleePeep:update(delta)
 		else
 			self:setVelocity(self.speed * difference:getNormal())
 		end
+	else
+		self:setVelocity(Vector(0))
 	end
 end
 
