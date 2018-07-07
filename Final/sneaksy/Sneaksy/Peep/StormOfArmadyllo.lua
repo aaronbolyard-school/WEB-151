@@ -17,7 +17,13 @@ local StormOfArmadyllo = Class(Peep)
 function StormOfArmadyllo:new()
 	Peep.new(self, "Storm of Armadyllo")
 
+	self.damage = 1
+
 	self:setShape(CircleShape(32))
+end
+
+function StormOfArmadyllo:getDamage()
+	return self.damage
 end
 
 function StormOfArmadyllo:onNotifyBeginCollision(e)

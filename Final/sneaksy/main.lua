@@ -1,5 +1,7 @@
 local Director = require "Sneaksy.Director"
 local Vector = require "Sneaksy.Common.Math.Vector"
+local EnemyRenderer = require "Sneaksy.Renderer.EnemyRenderer"
+local Renderer = require "Sneaksy.Renderer.Renderer"
 local SneaksyRenderer = require "Sneaksy.Renderer.SneaksyRenderer"
 local StormOfArmadylloRenderer = require "Sneaksy.Renderer.StormOfArmadylloRenderer"
 
@@ -13,6 +15,11 @@ function love.load()
 		p:teleport(Vector(400, 300))
 	end
 	_D:spawn(require "Sneaksy.Peep.Sneaksy")
+	do
+		local p = _D:spawn(require "Sneaksy.Peep.WeakMeleePeep")
+		local w, h = love.window.getMode()
+		p:teleport(Vector(w / 2, h / 2))
+	end
 
 	_D:addRenderer(
 		require "Sneaksy.Peep.StormOfArmadyllo",
@@ -21,6 +28,13 @@ function love.load()
 	_D:addRenderer(
 		require "Sneaksy.Peep.Sneaksy",
 		SneaksyRenderer())
+
+	_D:addRenderer(
+		require "Sneaksy.Peep.WeakMeleePeep",
+		EnemyRenderer({
+			idle = "Resources/WeakKnight/WeakKnight.png",
+			attack = "Resources/WeakKnight/WeakKnight_Attack.png"
+		}))
 end
 
 function love.update(delta)

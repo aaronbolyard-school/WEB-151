@@ -15,6 +15,10 @@ local Shape = require "Sneaksy.Common.Math.Shape"
 local Peep = Class()
 Peep.CURRENT_TALLY = 1
 
+Peep.TEAM_SNEAKSY = 1
+Peep.TEAM_DRAKKENSON = 2
+Peep.TEAM_NONE = 3
+
 -- Direction of the Peep. Used for scaling, etc.
 --
 -- Peeps are normally assumed to face right.
@@ -33,6 +37,8 @@ function Peep:new(name)
 	self.shape = Shape()
 	self.fixture = false
 	self.director = false
+
+	self.team = Peep.TEAM_NONE
 
 	self.name = name or "Guest #" .. tostring(Peep.CURRENT_TALLY)
 	self.id = Peep.CURRENT_TALLY
@@ -159,6 +165,14 @@ function Peep:setShape(value)
 	end
 end
 
+function Peep:getTeam()
+	return self.team
+end
+
+function Peep:setTeam(value)
+	self.team = value or self.team
+end
+
 function Peep:getName()
 	return self.name
 end
@@ -180,6 +194,13 @@ function Peep:update(delta)
 	self.acceleration = self.acceleration * 1.0 / (1.0 + self.dampening * delta)
 
 	self.position = Vector(self.body:getPosition())
+
+	local velocity = self:getVelocity()
+	if velocity.x > 1 then
+		self:setDirection(Peep.DIRECTION_RIGHT)
+	elseif velocity.x < -1 then
+		self:setDirection(Peep.DIRECTION_LEFT)
+	end
 end
 
 function Peep:listen(event, func, ...)
