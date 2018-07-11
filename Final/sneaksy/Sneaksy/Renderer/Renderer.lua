@@ -56,15 +56,29 @@ function Renderer:draw(peep)
 	local bounds = peep:getShape():getBounds()
 	local position = peep:getPosition()
 
+	local w
+	if bounds.x == 0 then
+		w = 32
+	else
+		w = bounds.x / 2
+	end
+
+	local h
+	if bounds.y == 0 then
+		h = 32
+	else
+		h = bounds.x / 2
+	end
+
 	love.graphics.setColor(0, 255, 0, 255)
 	love.graphics.rectangle(
 		'line',
-		position.x - bounds.x / 2, position.y - bounds.y / 2,
-		bounds.x, bounds.y)
+		position.x - w, position.y - h,
+		w, h)
 	love.graphics.printf(
 		peep:getName(),
-		position.x - bounds.x / 2, position.y,
-		bounds.x,
+		position.x - w, position.y,
+		w,
 		'center')
 
 	love.graphics.setColor(255, 255, 255, 255)

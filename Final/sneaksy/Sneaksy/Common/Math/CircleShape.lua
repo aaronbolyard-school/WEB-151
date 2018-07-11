@@ -33,4 +33,8 @@ function CircleShape:toLove()
 	return love.physics.newCircleShape(self.radius)
 end
 
+function CircleShape:inside(p)
+	return p:getLength() <= self.radius
+end
+
 return CircleShape

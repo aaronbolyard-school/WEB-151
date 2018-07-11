@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
--- Sneaksy/Peep/StrongMeleePeep.lua
+-- Sneaksy/Peep/WeakArcherPeep.lua
 --
 -- This file is a part of Sneaksy.
 --
@@ -10,16 +10,16 @@
 local Class = require "Sneaksy.Common.Class"
 local CircleShape = require "Sneaksy.Common.Math.CircleShape"
 local Peep = require "Sneaksy.Peep.Peep"
-local MeleePeep = require "Sneaksy.Peep.MeleePeep"
+local ArcherPeep = require "Sneaksy.Peep.ArcherPeep"
 
-local StrongMeleePeep = Class(MeleePeep)
+local WeakArcherPeep = Class(ArcherPeep)
 
-function StrongMeleePeep:new(name)
-	MeleePeep.new(self, "Itsy Knight")
+function WeakArcherPeep:new(name)
+	ArcherPeep.new(self, "Newbie Archer")
 
-	self:setDamageRange(2, 7)
-	self:setAttackCooldown(2.4)
-	self:setMaxHealth(96)
+	self:setDamageRange(1, 2)
+	self:setAttackCooldown(4.8)
+	self:setMaxHealth(16)
 end
 
-return StrongMeleePeep
+return WeakArcherPeep

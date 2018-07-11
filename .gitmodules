@@ -1,0 +1,3 @@
+[submodule "Final/love.js"]
+	path = Final/love.js
+	url = https://github.com/TannerRogalsky/love.js.git

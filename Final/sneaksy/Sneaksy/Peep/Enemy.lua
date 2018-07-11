@@ -23,6 +23,16 @@ function Enemy:new(name)
 	self.currentHealth = 1
 	self.isResurrected = false
 	self.targetTeam = Peep.TEAM_SNEAKSY
+
+	self.isBoss = false
+end
+
+function Enemy:getIsBoss()
+	return self.isBoss
+end
+
+function Enemy:setIsBoss(value)
+	self.isBoss = value or false
 end
 
 function Enemy:setMaxHealth(value)
@@ -84,6 +94,7 @@ function Enemy:resurrect()
 	self.targetTeam = Peep.TEAM_DRAKKENSON
 	self:setTeam(Peep.TEAM_SNEAKSY)
 
+	self.maxHealth = self.maxHealth * 1.5
 	self.currentHealth = self.maxHealth
 
 	self:broadcast('Resurrected', {})
@@ -106,6 +117,10 @@ function Enemy:findTarget()
 			target = peep
 			break
 		end
+	end
+
+	if target and self.isBoss and self:getTeam() == Peep.TEAM_DRAKKENSON then
+		return target
 	end
 
 	local distance

@@ -96,7 +96,8 @@ function Director:new()
 
 	self.callbacks = {}
 
-	self.pendingPeeps = {}
+	self.peepsPendingRemoval = {}
+	self.peepsPendingAddition = {}
 end
 
 function Director:addRenderer(Type, renderer)
@@ -126,7 +127,7 @@ function Director:spawn(Type, ...)
 		local peep = Type(...)
 		peep:init(self)
 
-		self.peeps[peep] = true
+		self.peepsPendingAddition[peep] = true
 
 		return peep
 	end
@@ -140,7 +141,7 @@ end
 -- otherwise.
 function Director:poof(peep)
 	if self.peeps[peep] then
-		table.insert(self.pendingPeeps, peep)
+		table.insert(self.peepsPendingRemoval, peep)
 		return true
 	end
 
@@ -208,12 +209,17 @@ function Director:near(position, distance)
 end
 
 function Director:update(delta)
-	for _, peep in pairs(self.pendingPeeps) do
+	for _, peep in pairs(self.peepsPendingRemoval) do
 		peep:poof()
 
 		self.peeps[peep] = nil
 	end
-	self.pendingPeeps = {}
+	self.peepsPendingRemoval = {}
+
+	for peep in pairs(self.peepsPendingAddition) do
+		self.peeps[peep] = true
+	end
+	self.peepsPendingAddition = {}
 
 	self.world:update(delta)
 

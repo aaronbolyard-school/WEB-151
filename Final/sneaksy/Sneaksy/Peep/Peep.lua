@@ -55,6 +55,7 @@ end
 function Peep:poof()
 	if self.body then
 		self.body:destroy()
+		self.body = false
 	end
 end
 
@@ -62,6 +63,7 @@ function Peep:makeBody(mode)
 	if self.body then
 		self.body:destroy()
 
+		self.body = false
 		self.fixture = false
 	end
 
@@ -99,7 +101,7 @@ function Peep:teleport(position)
 end
 
 function Peep:move(offset)
-	self.position = self.position + offset or Vector(0)
+	self.position = self.position + (offset or Vector(0))
 	if self.body then
 		self.body:setPosition(self.position.x, self.position.y)
 	end

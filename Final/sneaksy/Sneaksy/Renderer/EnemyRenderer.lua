@@ -67,15 +67,13 @@ function EnemyRenderer:draw(peep)
 	local angle
 	local positionX, positionY = position.x, position.y + peep:getShape():getRadius()
 	local anchorX, anchorY = image:getWidth() / 2, image:getHeight()
-	if speed > 1 and not peep:getIsDead() then
+	if not peep:getIsDead() then
 		local mu = self.times[peep] * math.pi * 2
 		local delta = (math.sin(mu) + 1) / 2
 		angle = lerp(-math.pi / 16, math.pi / 16, delta)
 	elseif peep:getIsDead() then
 		angle = math.pi / 2
 		positionY = position.y
-	else
-		angle = 0
 	end
 
 	if peep:getTeam() == Peep.TEAM_SNEAKSY then

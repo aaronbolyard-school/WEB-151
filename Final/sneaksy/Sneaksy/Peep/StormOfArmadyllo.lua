@@ -19,7 +19,7 @@ function StormOfArmadyllo:new()
 	Peep.new(self, "Storm of Armadyllo")
 
 	self.damage = 1
-	self.speed = 200
+	self.speed = 400
 
 	self:setShape(CircleShape(32))
 end

@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
--- Sneaksy/Peep/MeleePeep.lua
+-- Sneaksy/Peep/ArcherPeep.lua
 --
 -- This file is a part of Sneaksy.
 --
@@ -13,9 +13,9 @@ local Vector = require "Sneaksy.Common.Math.Vector"
 local Peep = require "Sneaksy.Peep.Peep"
 local Enemy = require "Sneaksy.Peep.Enemy"
 
-local MeleePeep = Class(Enemy)
+local ArcherPeep = Class(Enemy)
 
-function MeleePeep:new(name)
+function ArcherPeep:new(name)
 	Enemy.new(self, name)
 
 	self:setShape(CircleShape(32))
@@ -28,18 +28,20 @@ function MeleePeep:new(name)
 	self.attackCooldown = 1
 	self.currentCooldown = 0
 
+	self.range = 200
+
 	self:setDampening(0.5)
 end
 
-function MeleePeep:getDamage()
+function ArcherPeep:getDamage()
 	return math.random(self.minDamage, self.maxDamage)
 end
 
-function MeleePeep:getDamageRange()
+function ArcherPeep:getDamageRange()
 	return self.minDamage, self.maxDamage
 end
 
-function MeleePeep:setDamageRange(min, max)
+function ArcherPeep:setDamageRange(min, max)
 	local i = min or self.minDamage
 	local j = max or self.maxDamage
 
@@ -47,19 +49,23 @@ function MeleePeep:setDamageRange(min, max)
 	self.maxDamage = math.max(i, j)
 end
 
-function MeleePeep:getAttackCooldown()
+function ArcherPeep:getAttackCooldown()
 	return self.attackCooldown
 end
 
-function MeleePeep:setAttackCooldown(value)
+function ArcherPeep:setAttackCooldown(value)
 	self.attackCooldown = self.attackCooldown or value
 end
 
-function MeleePeep:resurrect()
-	Enemy.resurrect(self)
+function ArcherPeep:getRange()
+	return self.range
 end
 
-function MeleePeep:update(delta)
+function ArcherPeep:setRange(value)
+	self.range = value or self.range
+end
+
+function ArcherPeep:update(delta)
 	Enemy.update(self, delta)
 
 	self.currentCooldown = math.max(self.currentCooldown - delta, 0)
@@ -72,19 +78,21 @@ function MeleePeep:update(delta)
 
 		local isInRange
 		if target:isType(require "Sneaksy.Peep.Sneaksy") then
-			local dx = math.abs(difference.x) < targetSize.x + self:getShape():getRadius() * 1.25
+			local dx = math.abs(difference.x) < targetSize.x + self.range
 			local dy = difference.y < targetSize.y
 			isInRange = dx and dy
 		else
-			isInRange = difference:getLength() < self:getShape():getRadius() * 4
+			isInRange = difference:getLength() < self.range
 		end
 
 		if isInRange then
 			if self.currentCooldown <= 0 then
-				target:poke('Damaged', {
-					instigator = self,
-					damage = self:getDamage()
-				})
+				local arrow = self:getDirector():spawn(
+					require "Sneaksy.Peep.Arrow",
+					self:getDamage(),
+					(target:getPosition() - self:getPosition()):getNormal(),
+					self:getTeam())
+				arrow:teleport(self:getPosition())
 
 				self:broadcast('Attack', {})
 
@@ -106,4 +114,4 @@ function MeleePeep:update(delta)
 	end
 end
 
-return MeleePeep
+return ArcherPeep

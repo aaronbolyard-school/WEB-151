@@ -33,4 +33,15 @@ function BoxShape:toLove()
 	return love.physics.newRectangleShape(self.size.x, self.size.y)
 end
 
+function BoxShape:inside(p)
+	local halfSize = self.size
+	if p.x > -halfSize.x and p.x < halfSize.x and
+	   p.y > -halfSize.y and p.y < halfSize.y
+	then
+		return true
+	else
+		return false
+	end
+end
+
 return BoxShape

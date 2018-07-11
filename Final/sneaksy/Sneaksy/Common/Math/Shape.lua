@@ -21,9 +21,16 @@ function Shape:getBounds()
 	return Vector.ZERO
 end
 
--- Converst the Shape to a Love2D Shape.
+-- Converts the Shape to a Love2D Shape.
 function Shape:toLove()
 	return nil
+end
+
+-- Returns true if point 'p' is within the shape, false otherwise.
+--
+-- 'p' is assumed to be in the shape's coordinates system.
+function Shape:inside(p)
+	return false
 end
 
 return Shape

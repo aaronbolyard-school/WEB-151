@@ -23,6 +23,8 @@ function Sneaksy:new()
 	self.isDragging = false
 	self.startDragX = 0
 	self.startDragY = 0
+
+	self:setTeam(Peep.TEAM_SNEAKSY)
 end
 
 function Sneaksy:init(...)

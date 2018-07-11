@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
--- Sneaksy/Peep/StrongMeleePeep.lua
+-- Sneaksy/Peep/CowBossPeep.lua
 --
 -- This file is a part of Sneaksy.
 --
@@ -12,14 +12,17 @@ local CircleShape = require "Sneaksy.Common.Math.CircleShape"
 local Peep = require "Sneaksy.Peep.Peep"
 local MeleePeep = require "Sneaksy.Peep.MeleePeep"
 
-local StrongMeleePeep = Class(MeleePeep)
+local CowBossPeep = Class(MeleePeep)
 
-function StrongMeleePeep:new(name)
-	MeleePeep.new(self, "Itsy Knight")
+function CowBossPeep:new(name)
+	MeleePeep.new(self, "Super Cow")
 
-	self:setDamageRange(2, 7)
-	self:setAttackCooldown(2.4)
-	self:setMaxHealth(96)
+	self:setDamageRange(12, 16)
+	self:setAttackCooldown(1.8)
+	self:setMaxHealth(128)
+
+	self:setShape(CircleShape(64))
+	self:setIsBoss(true)
 end
 
-return StrongMeleePeep
+return CowBossPeep
