@@ -18,7 +18,7 @@ StormOfArmadyllo.DAMAGE_MULTIPLIER = 8
 function StormOfArmadyllo:new()
 	Peep.new(self, "Storm of Armadyllo")
 
-	self.damage = 1
+	self.damage = 2
 	self.speed = 400
 
 	self:setShape(CircleShape(32))

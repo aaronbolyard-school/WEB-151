@@ -109,7 +109,7 @@ function Waves:draw()
 			"NEXT WAVE IN %d SEC...",
 			Waves.SPAWN_TIME - math.floor(self.spawnTime))
 		else
-			text = "JAKKENSTON GET! YOU WIN!"
+			text = "JAKKENSTONE GET! YOU WIN!"
 		end
 
 		love.graphics.setColor(0, 0, 0, 255)

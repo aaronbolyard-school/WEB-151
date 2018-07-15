@@ -45,6 +45,8 @@ function Drakkenson:new(name)
 	self:setIsBoss(true)
 
 	self:nextState()
+
+	self.spawned = false
 end
 
 function Drakkenson:nextState()
@@ -79,6 +81,19 @@ end
 
 function Drakkenson:update(delta)
 	Enemy.update(self, delta)
+
+	if not self.spawned then
+		for peep in self:getDirector():byType(Enemy) do
+			if peep:getTeam() == Peep.TEAM_SNEAKSY then
+				peep:poke('Damaged', {
+					instigator = self,
+					damage = peep:getMaxHealth() / 2
+				})
+			end
+		end
+
+		self.spawned = true
+	end
 
 	self.currentCooldown = math.max(self.currentCooldown - delta, 0)
 
