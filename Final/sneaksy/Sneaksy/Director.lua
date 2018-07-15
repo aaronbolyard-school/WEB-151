@@ -98,6 +98,8 @@ function Director:new()
 
 	self.peepsPendingRemoval = {}
 	self.peepsPendingAddition = {}
+
+	self.background = love.graphics.newImage("Resources/Background.png")
 end
 
 function Director:addRenderer(Type, renderer)
@@ -252,6 +254,20 @@ function Director:draw()
 	end
 
 	table.sort(peeps, function(a, b) return a:getPosition().y < b:getPosition().y end)
+
+	do
+		local w, h = love.window.getMode()
+		local scaleX, scaleY = w / self.background:getWidth(), h / self.background:getHeight()
+		local scale = math.max(scaleX, scaleY)
+
+		love.graphics.draw(
+			self.background,
+			w / 2, h / 2,
+			0,
+			scale, scale,
+			self.background:getWidth() / 2,
+			self.background:getHeight() / 2)
+	end
 
 	for _, renderer in pairs(self.renderers) do
 		renderer:start()

@@ -256,6 +256,9 @@ function love.draw()
 				sneaksy.maxHealth)
 		end
 
+		love.graphics.setColor(0, 0, 0, 255)
+		love.graphics.printf(message, 1, 9, w, 'center')
+		love.graphics.setColor(255, 255, 255, 255)
 		love.graphics.printf(message, 0, 8, w, 'center')
 	end
 end
