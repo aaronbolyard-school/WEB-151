@@ -22,7 +22,7 @@ function love.load()
 
 	_W = Waves(_D)
 	_W:push({
-		{ peep = "WeakMeleePeep", count = 1 },
+		{ peep = "WeakMeleePeep", count = 1 }
 	})
 	_W:push({
 		{ peep = "WeakMeleePeep", count = 2 }
@@ -53,6 +53,69 @@ function love.load()
 		{ peep = "WeakArcherPeep", count = 2 },
 		{ peep = "StrongArcherPeep", count = 1 },
 	}) 
+	_W:push({
+		{ peep = "StrongMeleePeep", count = 1 },
+		{ peep = "WeakArcherPeep", count = 3 },
+		{ peep = "StrongArcherPeep", count = 1 },
+		{ peep = "WeakWizardPeep", count = 1 },
+	})
+	_W:push({
+		{ peep = "GoblinBossPeep", count = 1 },
+		{ peep = "StrongArcherPeep", count = 2 },
+	})
+	_W:push({
+		{ peep = "WeakWizardPeep", count = 1 },
+		{ peep = "WeakMeleePeep", count = 1 },
+		{ peep = "WeakArcherPeep", count = 1 },
+	})
+	_W:push({
+		{ peep = "WeakWizardPeep", count = 2 },
+		{ peep = "WeakMeleePeep", count = 1 },
+		{ peep = "WeakArcherPeep", count = 1 },
+	})
+	_W:push({
+		{ peep = "WeakWizardPeep", count = 2 },
+		{ peep = "StrongWizardPeep", count = 1 },
+		{ peep = "WeakMeleePeep", count = 1 },
+		{ peep = "WeakArcherPeep", count = 1 },
+	})
+	_W:push({
+		{ peep = "StrongWizardPeep", count = 2 },
+		{ peep = "StrongMeleePeep", count = 2 },
+		{ peep = "StrongArcherPeep", count = 2 },
+	})
+	_W:push({
+		{ peep = "DragonBossPeep", count = 1 },
+		{ peep = "StrongWizardPeep", count = 2 },
+		{ peep = "StrongMeleePeep", count = 1 },
+		{ peep = "StrongArcherPeep", count = 1 },
+	})
+	_W:push({
+		{ peep = "StrongWizardPeep", count = 3 },
+		{ peep = "StrongMeleePeep", count = 3 },
+		{ peep = "StrongArcherPeep", count = 3 },
+	})
+	_W:push({
+		{ peep = "StrongWizardPeep", count = 2 },
+		{ peep = "StrongMeleePeep", count = 2 },
+		{ peep = "StrongArcherPeep", count = 2 },
+		{ peep = "WeakWizardPeep", count = 1 },
+		{ peep = "WeakMeleePeep", count = 1 },
+		{ peep = "WeakArcherPeep", count = 1 },
+	})
+	_W:push({
+		{ peep = "DragonBossPeep", count = 1 },
+		{ peep = "GoblinBossPeep", count = 1 },
+		{ peep = "CowBossPeep", count = 1 },
+	})
+	_W:push({
+		{ peep = "WeakWizardPeep", count = 5 },
+		{ peep = "WeakMeleePeep", count = 5 },
+		{ peep = "WeakArcherPeep", count = 5 },
+	})
+	_W:push({
+		{ peep = "Drakkenson", count = 1 }
+	})
 
 	_D:addRenderer(
 		require "Sneaksy.Peep.StormOfArmadyllo",
@@ -67,6 +130,17 @@ function love.load()
 		ArrowRenderer())
 
 	_D:addRenderer(
+		require "Sneaksy.Peep.Fireball",
+		ArrowRenderer({ filename = "Resources/Projectile/Fireball.png" }))
+
+	_D:addRenderer(
+		require "Sneaksy.Peep.WeakWizardPeep",
+		EnemyRenderer({
+			idle = "Resources/WeakWizard/WeakWizard.png",
+			attack = "Resources/WeakWizard/WeakWizard_Attack.png"
+		}))
+
+	_D:addRenderer(
 		require "Sneaksy.Peep.WeakArcherPeep",
 		EnemyRenderer({
 			idle = "Resources/WeakArcher/WeakArcher.png",
@@ -78,6 +152,13 @@ function love.load()
 		EnemyRenderer({
 			idle = "Resources/WeakKnight/WeakKnight.png",
 			attack = "Resources/WeakKnight/WeakKnight_Attack.png"
+		}))
+
+	_D:addRenderer(
+		require "Sneaksy.Peep.StrongWizardPeep",
+		EnemyRenderer({
+			idle = "Resources/StrongWizard/StrongWizard.png",
+			attack = "Resources/StrongWizard/StrongWizard_Attack.png"
 		}))
 
 	_D:addRenderer(
@@ -95,16 +176,49 @@ function love.load()
 		}))
 
 	_D:addRenderer(
+		require "Sneaksy.Peep.DragonBossPeep",
+		EnemyRenderer({
+			idle = "Resources/Dragon/Dragon.png",
+			attack = "Resources/Dragon/Dragon_Attack.png"
+		}))
+
+	_D:addRenderer(
+		require "Sneaksy.Peep.GoblinBossPeep",
+		EnemyRenderer({
+			idle = "Resources/Goblin/Goblin.png",
+			attack = "Resources/Goblin/Goblin_Attack.png"
+		}))
+
+	_D:addRenderer(
 		require "Sneaksy.Peep.CowBossPeep",
 		EnemyRenderer({
 			idle = "Resources/Cow/Cow.png",
 			attack = "Resources/Cow/Cow_Attack.png"
+		}))
+
+	_D:addRenderer(
+		require "Sneaksy.Peep.Drakkenson",
+		EnemyRenderer({
+			idle = "Resources/Dragonkin/Dragonkin.png",
+			attack = "Resources/Dragonkin/Dragonkin_Attack.png"
 		}))
 end
 
 function love.update(delta)
 	_D:update(delta)
 	_W:update(delta)
+end
+
+function love.touchpressed(id, x, y, dx, dy)
+	_D:broadcast('MousePressed', x, y, 1)
+end
+
+function love.touchreleased(id, x, y, dx, dy)
+	_D:broadcast('MouseReleased', x, y, 1)
+end
+
+function love.touchmoved(id, x, y)
+	_D:broadcast('MouseMoved', x, y)
 end
 
 function love.mousepressed(...)
@@ -122,4 +236,26 @@ end
 function love.draw()
 	_D:draw()
 	_W:draw()
+
+	local sneaksy
+	for peep in _D:byType(require "Sneaksy.Peep.Sneaksy") do
+		sneaksy = peep
+		break
+	end
+
+	if sneaksy then
+		local w = love.window.getMode()
+
+		local message
+		if sneaksy.isDead and not _W.won then
+			message = "GAME OVER"
+		else
+			message = string.format(
+				"Health: %d/%d",
+				sneaksy.currentHealth,
+				sneaksy.maxHealth)
+		end
+
+		love.graphics.printf(message, 0, 8, w, 'center')
+	end
 end

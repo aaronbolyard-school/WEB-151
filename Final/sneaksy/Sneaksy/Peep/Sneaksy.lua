@@ -25,6 +25,10 @@ function Sneaksy:new()
 	self.startDragY = 0
 
 	self:setTeam(Peep.TEAM_SNEAKSY)
+
+	self.currentHealth = 200
+	self.maxHealth = 200
+	self.isDead = false
 end
 
 function Sneaksy:init(...)
@@ -36,16 +40,18 @@ end
 function Sneaksy:update(delta)
 	Peep.update(self, delta)
 
-	local StormOfArmadyllo = require "Sneaksy.Peep.StormOfArmadyllo"
-	local stormOfArmadyllo
-	for peep in self:getDirector():byType(StormOfArmadyllo) do
-		stormOfArmadyllo = peep
-		break
-	end
+	if not self.isDead then
+		local StormOfArmadyllo = require "Sneaksy.Peep.StormOfArmadyllo"
+		local stormOfArmadyllo
+		for peep in self:getDirector():byType(StormOfArmadyllo) do
+			stormOfArmadyllo = peep
+			break
+		end
 
-	if stormOfArmadyllo then
-		local distanceY = stormOfArmadyllo:getPosition().y - self.position.y
-		self:setVelocity(Vector(0, distanceY / 32 * stormOfArmadyllo:getVelocity():getLength()))
+		if stormOfArmadyllo then
+			local distanceY = stormOfArmadyllo:getPosition().y - self.position.y
+			self:setVelocity(Vector(0, distanceY / 32 * stormOfArmadyllo:getVelocity():getLength()))
+		end
 	end
 end
 
@@ -55,7 +61,7 @@ function Sneaksy:onMousePressed(x, y, button)
 		self.startDragX = x
 		self.startDragY = y
 
-		self:getDirector():broadcastNear(
+		 self:getDirector():broadcastNear(
 			Vector(x, y),
 			128,
 			'Resurrect',
@@ -69,6 +75,15 @@ function Sneaksy:onMouseReleased(x, y, button)
 		local t = Vector(x, y)
 		local normal = (t - s):getNormal()
 		self:swipe(normal)
+	end
+end
+
+function Sneaksy:onDamaged(e)
+	self.currentHealth = self.currentHealth - e.damage
+	self.currentHealth = math.max(self.currentHealth, 0)
+
+	if self.currentHealth < 1 then
+		self.isDead = true
 	end
 end
 
@@ -94,11 +109,12 @@ function Sneaksy:swipe(normal)
 	end
 end
 
-function Sneaksy:onNotifyCollision(e)
+function Sneaksy:onNotifyBeginCollision(e)
 	local StormOfArmadyllo = require "Sneaksy.Peep.StormOfArmadyllo"
 
-	if e.other:isType(StormOfArmadyllo) then
-		-- Nothing.
+	if e.other:isType(StormOfArmadyllo) and not self.isDead then
+		self.currentHealth = self.currentHealth + math.floor(e.other:getDamage() / 2)
+		self.currentHealth = math.min(self.currentHealth, self.maxHealth)
 	end
 end
 

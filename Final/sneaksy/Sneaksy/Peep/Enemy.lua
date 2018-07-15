@@ -13,6 +13,7 @@ local Shape = require "Sneaksy.Common.Math.Shape"
 local Peep = require "Sneaksy.Peep.Peep"
 
 local Enemy = Class(Peep)
+Enemy.DRAIN_RATE = 0.5
 
 function Enemy:new(name)
 	Peep.new(self, name)
@@ -25,6 +26,8 @@ function Enemy:new(name)
 	self.targetTeam = Peep.TEAM_SNEAKSY
 
 	self.isBoss = false
+
+	self.tick = 0
 end
 
 function Enemy:getIsBoss()
@@ -98,6 +101,8 @@ function Enemy:resurrect()
 	self.currentHealth = self.maxHealth
 
 	self:broadcast('Resurrected', {})
+
+	self.isResurrected = true
 end
 
 function Enemy:killed()
@@ -140,9 +145,17 @@ function Enemy:findTarget()
 	return target
 end
 
--- Poof!
-function Enemy:onWaveFinished()
-	self:getDirector():poof(self)
+function Enemy:update(delta)
+	Peep.update(self, delta)
+
+	if self.isResurrected then
+		if self.tick > Enemy.DRAIN_RATE then
+			self:damage(1)
+			self.tick = 0
+		end
+
+		self.tick = self.tick + delta
+	end
 end
 
 return Enemy

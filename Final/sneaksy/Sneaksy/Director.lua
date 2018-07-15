@@ -256,6 +256,7 @@ function Director:draw()
 	for _, renderer in pairs(self.renderers) do
 		renderer:start()
 	end
+	self.defaultRenderer:start()
 
 	for i = 1, #peeps do
 		local peep = peeps[i]
@@ -271,6 +272,7 @@ function Director:draw()
 	for _, renderer in pairs(self.renderers) do
 		renderer:stop()
 	end
+	self.defaultRenderer:stop()
 end
 
 return Director

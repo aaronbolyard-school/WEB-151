@@ -12,10 +12,13 @@ local Renderer = require "Sneaksy.Renderer.Renderer"
 
 local ArrowRenderer = Class(Renderer)
 
-function ArrowRenderer:new()
+function ArrowRenderer:new(t)
 	Renderer.new(self)
 
-	self.image = love.graphics.newImage("Resources/Projectile/Arrow.png")
+	t = t or {}
+
+	self.image = love.graphics.newImage(
+		t.filename or "Resources/Projectile/Arrow.png")
 end
 
 function ArrowRenderer:draw(peep)

@@ -27,9 +27,18 @@ function Waves:new(director)
 	self.spawnTime = 0
 
 	self.font = love.graphics.newFont(32)
+	self.won = false
 end
 
 function Waves:onKilled(e)
+	if self.currentWave >= #self.waves then
+		if e.peep:isType(require "Sneaksy.Peep.Drakkenson") then
+			self.won = true
+		end
+
+		return
+	end
+
 	if e.peep:getTeam() == Peep.TEAM_DRAKKENSON then
 		self.currentCount = self.currentCount + 1
 
@@ -86,7 +95,7 @@ function Waves:update(delta)
 end
 
 function Waves:draw()
-	if self.spawnNextWave then
+	if self.spawnNextWave or self.won then
 		local oldFont = love.graphics.getFont()
 		local w, h = love.window.getMode()
 		local x = 0
@@ -94,9 +103,14 @@ function Waves:draw()
 
 		love.graphics.setFont(self.font)
 
-		local text = string.format(
+		local text
+		if self.spawnNextWave then
+			text = string.format(
 			"NEXT WAVE IN %d SEC...",
 			Waves.SPAWN_TIME - math.floor(self.spawnTime))
+		else
+			text = "JAKKENSTON GET! YOU WIN!"
+		end
 
 		love.graphics.setColor(0, 0, 0, 255)
 		love.graphics.printf(
