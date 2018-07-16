@@ -78,6 +78,8 @@ function WizardPeep:update(delta)
 
 	self.currentCooldown = math.max(self.currentCooldown - delta, 0)
 
+	-- The logic is the same as the archer Peep, except it shoots
+	-- a fireball.
 	local target = self:findTarget()
 	if target and not self:getIsDead() then
 		local targetSize = target:getShape():getBounds() / 2

@@ -12,6 +12,8 @@ local Vector = require "Sneaksy.Common.Math.Vector"
 local Peep = require "Sneaksy.Peep.Peep"
 
 Waves = Class()
+
+-- Time, in seconds, between waves.
 Waves.SPAWN_TIME = 5
 
 function Waves:new(director)
@@ -31,6 +33,8 @@ function Waves:new(director)
 end
 
 function Waves:onKilled(e)
+	-- Since the Drakkenson spawns Peeps, only continue if the Drakkenson
+	-- is killed.
 	if self.currentWave >= #self.waves then
 		if e.peep:isType(require "Sneaksy.Peep.Drakkenson") then
 			self.won = true
@@ -39,15 +43,28 @@ function Waves:onKilled(e)
 		return
 	end
 
+	-- Check if the Peep was an enemy...
 	if e.peep:getTeam() == Peep.TEAM_DRAKKENSON then
+		-- ...and if so, update the killcount.
 		self.currentCount = self.currentCount + 1
 
+		-- If we've killed as many Peeps as there were in the wave,
+		-- move on. We're done.
 		if self.currentCount >= #self.waves[self.currentWave] then
 			self.spawnNextWave = true
 		end
 	end
 end
 
+-- Pushes a wave.
+--
+-- 't' is in the form { peep = <string>, count = <num> }.
+--
+-- 'peep' should by local to the Sneaksy.Peep scope. For example,
+-- Sneaksy.Peep.WeakArcherPeep would be just "WeakArcherPeep."
+--
+-- When the wave is spawned, 'count' 'peep(s)' will be spawned randomly
+-- around the arena.
 function Waves:push(t)
 	local wave = {}
 	for i = 1, #t do
@@ -61,6 +78,7 @@ function Waves:push(t)
 	table.insert(self.waves, wave)
 end
 
+-- Spawns peeps. Resets the wave counter state.
 function Waves:nextWave()
 	self.currentWave = self.currentWave + 1
 	self.currentCount = 0
@@ -81,6 +99,7 @@ function Waves:nextWave()
 	end
 end
 
+-- Updates the wave. Handles waiting between waves.
 function Waves:update(delta)
 	if self.spawnNextWave then
 		if self.spawnTime > Waves.SPAWN_TIME then
@@ -94,6 +113,8 @@ function Waves:update(delta)
 	end
 end
 
+-- Draws the "NEXT WAVE ..." or win text, depending on the state of
+-- the game.
 function Waves:draw()
 	if self.spawnNextWave or self.won then
 		local oldFont = love.graphics.getFont()

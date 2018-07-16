@@ -40,6 +40,7 @@ end
 function Sneaksy:update(delta)
 	Peep.update(self, delta)
 
+	-- Only move if alive.
 	if not self.isDead then
 		local StormOfArmadyllo = require "Sneaksy.Peep.StormOfArmadyllo"
 		local stormOfArmadyllo
@@ -88,6 +89,7 @@ function Sneaksy:onDamaged(e)
 end
 
 function Sneaksy:swipe(normal)
+	-- Teleport across the arena if mostly vertical (+/- ~20? degrees)
 	if math.abs(normal.y) < 0.25 then
 		local width = self:getShape():getSize().x
 		local arenaWidth = self:getDirector():getSize()
@@ -101,6 +103,7 @@ function Sneaksy:swipe(normal)
 		end
 
 		self:broadcast('Teleport', {})
+	-- Otherwise, swipe.
 	else
 		self:getDirector():broadcast('SneaksySwipe', {
 			position = self:getPosition(),
@@ -112,6 +115,8 @@ end
 function Sneaksy:onNotifyBeginCollision(e)
 	local StormOfArmadyllo = require "Sneaksy.Peep.StormOfArmadyllo"
 
+	-- Heal if not swiped. The ball will bounce based on the normal, instead
+	-- of based on user specified input.
 	if e.other:isType(StormOfArmadyllo) and not self.isDead then
 		self.currentHealth = self.currentHealth + math.floor(e.other:getDamage() / 2)
 		self.currentHealth = math.min(self.currentHealth, self.maxHealth)

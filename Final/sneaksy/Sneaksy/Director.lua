@@ -102,6 +102,9 @@ function Director:new()
 	self.background = love.graphics.newImage("Resources/Background.png")
 end
 
+-- Adds a rendere for the specified Peep type.
+--
+-- Only uses renderer if Type matches the underlying Peep exactly. Sorry!
 function Director:addRenderer(Type, renderer)
 	if not self.renderers[Type] then
 		self.renderers[Type] = renderer
@@ -114,6 +117,7 @@ function Director:getSize()
 	return w, h
 end
 
+-- Gets the world (LOVE). Used for collision.
 function Director:getWorld()
 	return self.world
 end
@@ -191,18 +195,21 @@ function Director:broadcastNear(point, distance, event, e, ...)
 	end
 end
 
+-- Iterates over Peep of Type (can be derived; mustn't be exact).
 function Director:byType(Type)
 	return self:iterate(function(c)
 		return Class.isDerived(c:getType(), Type)
 	end)
 end
 
+-- Iterates Peep by 'team'.
 function Director:byTeam(team)
 	return self:iterate(function(c)
 		return c:getTeam() == team
 		end)
 end
 
+-- Iterates over Peeps near position.
 function Director:near(position, distance)
 	return self:iterate(function(c)
 		local difference = position - c:getPosition()
@@ -210,6 +217,10 @@ function Director:near(position, distance)
 	end)
 end
 
+-- Updates the game.
+--
+-- First removes poofed peeps; then adds pending peeps; then updates
+-- physics; then updates peeps; then updates renderers. Wooh!
 function Director:update(delta)
 	for _, peep in pairs(self.peepsPendingRemoval) do
 		peep:poof()
@@ -234,6 +245,8 @@ function Director:update(delta)
 	end
 end
 
+-- Generic iterator. 'filter' can be a function that returns true or
+-- false to skip certain Peeps.
 function Director:iterate(filter)
 	filter = filter or function() return true end
 
@@ -247,6 +260,9 @@ function Director:iterate(filter)
 	end
 end
 
+-- Draws the Peeps.
+--
+-- See Renderer. A default Renderer is used if a Peep matches none.
 function Director:draw()
 	local peeps = {}
 	for peep in self:iterate() do

@@ -12,6 +12,7 @@ local Vector = require "Sneaksy.Common.Math.Vector"
 local CircleShape = require "Sneaksy.Common.Math.CircleShape"
 local Peep = require "Sneaksy.Peep.Peep"
 
+-- An arrow does ranged damage; it keeps going until it hits an enemy.
 local Arrow = Class(Peep)
 Arrow.SPEED = 100
 

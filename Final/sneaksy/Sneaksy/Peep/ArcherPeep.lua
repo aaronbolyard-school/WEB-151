@@ -70,6 +70,11 @@ function ArcherPeep:update(delta)
 
 	self.currentCooldown = math.max(self.currentCooldown - delta, 0)
 
+	-- The logic is essentially...
+	-- 1) Find target.
+	-- 2a) If the target is Sneaksy, line up vertically.
+	-- 2a) If the target is anything else, just attack within range.
+	-- 3) Shoot an arrow if in range and cooldown is down.
 	local target = self:findTarget()
 	if target and not self:getIsDead() then
 		local targetSize = target:getShape():getBounds() / 2

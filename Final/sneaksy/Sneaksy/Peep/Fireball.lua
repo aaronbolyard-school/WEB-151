@@ -12,6 +12,8 @@ local Vector = require "Sneaksy.Common.Math.Vector"
 local CircleShape = require "Sneaksy.Common.Math.CircleShape"
 local Peep = require "Sneaksy.Peep.Peep"
 
+-- A fireball is a like an arrow, but it pierces enemies and disappears
+-- when off the screen.
 local Fireball = Class(Peep)
 Fireball.SPEED = 400
 

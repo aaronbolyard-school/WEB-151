@@ -13,10 +13,11 @@ function love.load()
 
 	_D = Director()
 	do
+		local w, h = _D:getSize()
 		local p = _D:spawn(require "Sneaksy.Peep.StormOfArmadyllo")
 		p:setVelocity(Vector(math.random(100, 200), math.random(100, 200)))
 		p:setDampening(0)
-		p:teleport(Vector(400, 300))
+		p:teleport(Vector(w / 2, h / 2))
 	end
 	_D:spawn(require "Sneaksy.Peep.Sneaksy")
 

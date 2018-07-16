@@ -29,6 +29,9 @@ function StormOfArmadyllo:getDamage()
 end
 
 function StormOfArmadyllo:onNotifyBeginTouch(e)
+	-- Don't keep colliding with Sneaksy.
+	--
+	-- If Sneaksy teleports on the ball it gets stuck otherwise.
 	local Sneaksy = require "Sneaksy.Peep.Sneaksy"
 	if e.other:isType(Sneaksy) then
 		local size = e.other:getShape():getSize()
@@ -44,11 +47,13 @@ function StormOfArmadyllo:onNotifyBeginTouch(e)
 	end
 end
 
+-- Bounce off enemies, etc.
 function StormOfArmadyllo:onNotifyBeginCollision(e)
 	self:setVelocity(self:getVelocity():reflect(e.normal))
 	self:setAcceleration(self:getAcceleration():reflect(e.normal))
 end
 
+-- Move in the direction of a Swipe if we're nearby.
 function StormOfArmadyllo:onSneaksySwipe(e)
 	local difference = e.position - self:getPosition()
 	local distance = difference:getLength()
@@ -93,6 +98,7 @@ function StormOfArmadyllo:update(delta)
 	local acceleration = self:getAcceleration()
 	local velocity = self:getVelocity()
 
+	-- Bounce off the sides.
 	if position.x < 0 then
 		self:teleport(Vector(0, position.y))
 		self:setAcceleration(acceleration:reflect(Vector(1, 0)))
@@ -129,6 +135,7 @@ function StormOfArmadyllo:update(delta)
 		})
 	end
 
+	-- Ensure we keep the same speed (magnitude).
 	do
 		local v = self:getVelocity():getNormal() * self.speed
 		self:setVelocity(v)

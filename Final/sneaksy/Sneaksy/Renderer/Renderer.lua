@@ -9,6 +9,17 @@
 --------------------------------------------------------------------------------
 local Class = require "Sneaksy.Common.Class"
 
+-- Renderer!
+--
+-- First, we load any resources (in new).
+--
+-- Then we keep track of rendered Peeps. If a Peep is rendered one frame,
+-- but not the next, it's dropped. If a Peep is newly rendered, it's added.
+-- Listen for onPeepAdded and onPeepRemoved to be notified.
+--
+-- 'update' should be used to advance animations.
+--
+-- 'draw' renders a single Peep. Sorting is handled by the Director.
 local Renderer = Class()
 
 function Renderer:new()
@@ -50,6 +61,11 @@ function Renderer:update(delta)
 	-- Nothing.
 end
 
+-- Draws 'peep'.
+--
+-- Implementations must call 'visit' on the Peep or things break.
+--
+-- The default renderer draws the bounds of the Peep and its name.
 function Renderer:draw(peep)
 	self:visit(peep)
 
